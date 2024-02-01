@@ -6,6 +6,8 @@ This is the controller main.tf file on Cloud9 IDE that orchestrates this.  Note 
 This controller main.tf stays local on the Cloud9 IDE and is not deployed to github or terraform cloud.  This file is terraform applied from an mtc-control directory in this
 terraform project workspace on Cloud9 IDE as part of this development project.  Note that the github repo created below is destroyed on terraform destroy. This README file pertains to the deployment flows that the config designer main.tf file on it deploys to AWS. The config designer main.tf file is below this mtc control main.tf file that is right below.
 
+Note that a terraorm destroy on the Cloud9 IDE will remove the mtc-dev-repo deployment repo on github as well as tear down the deployment on AWS
+
 # This is mtc-control/main.tf.  Terraform has been intialized in this directory and can be run locally in Cloud9 IDE
 
 
