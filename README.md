@@ -21,6 +21,7 @@ locals {
     aws_creds = {
         AWS_ACCESS_KEY_ID = var.aws_access_key_id
         AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key
+        
         # note that the CAPS are only used here for the aws_creds.  The local.aws_creds is what is passed to the terraform cloud runners via
         # the tfe provider in providers.tf via the resource "tfe_variable" "aws_creds"  below.
     }
