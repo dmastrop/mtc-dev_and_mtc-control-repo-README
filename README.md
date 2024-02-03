@@ -17,6 +17,7 @@ Note that a terraorm destroy on the Cloud9 IDE will remove the mtc-dev-repo depl
 
 
 #add a locals block
+
 locals {
     aws_creds = {
         AWS_ACCESS_KEY_ID = var.aws_access_key_id
