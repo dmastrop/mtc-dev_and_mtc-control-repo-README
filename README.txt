@@ -2,12 +2,18 @@
 This is a mtc-dev/control README for the terraform cloud deployment of the compute and networking repos terraform-aws-networking and terraform-aws-compute. 
 The terraform cloud configuration designer is used to create the main.tf which is deployed to a real time mtc-dev-repo created on terraform apply of a main.tf controller file on Cloud9 IDE.  
 
+
+
+
+
+
 This is the controller main.tf file on Cloud9 IDE that orchestrates this.  Note that the deployment github repo is exclusively created here on terraform (not manually through the github web console). Likewise the oAuth is set up through this terraform controller main.tf file (see resources below). A new deployment workspace is created in terraform cloud to host the config designer main.tf that will actually deploy the compute and networking modules in the terraform cloud org to AWS.  Note that the oAuth permits this new deployment workspace on terraform cloud to communicate with github to get the deployment main.tf config designer file that deploys the compute and networking terraform modules.  This setup is very highly scalable since it is fully modularized and the newest github VC provider (see below) is added at the org level. The various workspaces in terraform cloud are in the org and have full access to all terraform modules in that org to run in these various workspaces. 
 
 This controller main.tf stays local on the Cloud9 IDE and is not deployed to github or terraform cloud.  This file is terraform applied from an mtc-control directory in this
 terraform project workspace on Cloud9 IDE as part of this development project.  Note that the github repo created below is destroyed on terraform destroy. This README file pertains to the deployment flows that the config designer main.tf file on it deploys to AWS. The config designer main.tf file is below this mtc control main.tf file that is right below.
 
 Note that a terraorm destroy on the Cloud9 IDE will remove the mtc-dev-repo deployment repo on github as well as tear down the deployment on AWS
+
 
 
 
@@ -118,10 +124,19 @@ resource "tfe_variable" "aws_creds" {
 }
 
 
+
+
+
+
+
 This is the terraform config designer main.tf that is put into the new deployment workspace on terraform that is created by the controller main.tf above.
 The config designer main.tf is pushed to the github deployment repo "mtc-dev-repo" that is created during terraform apply of the controller main.tf (above) on Cloud9 IDE.
 The file is fetched from the local Cloud9 workspace at this location:   content = file("./deployments/mtc-dev/main.tf")
 The controller main.tf file above has established an oAuth between this github repo and terraform cloud with the workspace specified above in terraform cloud (a deployment workspace).  So terraform deployment workspace has access to this config designer main.tf. Once the terraform deployment workspace has this config designer main.tf it can then deploy the compute and netwokring modules in the terraform org (and if there are other modules it can do those) to AWS. The AWS authentication between terraform cloud (workspace) and AWS is facilitated by the loca.aws_creds in the main.tf controller file above.   The locals block in the main.tf above has access to the aws access ID and secret access key that is stored in varaibles.tf via terraform.tfvars file locally on the Cloud9 IDE. Note that these files themselves are never pushed to github and thus there is security.
+
+
+
+
 
 
 # This is  mtc-control/deployments/mtc-dev/main.tf
