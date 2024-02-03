@@ -16,7 +16,7 @@ Note that a terraorm destroy on the Cloud9 IDE will remove the mtc-dev-repo depl
 #Terraform has been intialized in this directory and can be run locally in Cloud9 IDE
 
 
-# add a locals block
+#add a locals block
 locals {
     aws_creds = {
         AWS_ACCESS_KEY_ID = var.aws_access_key_id
@@ -29,10 +29,10 @@ locals {
     # my terraform cloud org is the above.
 }
 
-# https://registry.terraform.io/providers/integrations/github/latest/docs
-# We will use the github provider to create the github deployment repo on github with the /mtc-control/deployments/mtc-dev/main.tf 
-# terraform file that will eventually get pushed to a deploymetn workspace on terraform cloud!
-# This main.tf will deploy the compute and networking mmodules on terraform cloud to AWS
+#https://registry.terraform.io/providers/integrations/github/latest/docs
+#We will use the github provider to create the github deployment repo on github with the /mtc-control/deployments/mtc-dev/main.tf 
+#terraform file that will eventually get pushed to a deploymetn workspace on terraform cloud!
+#This main.tf will deploy the compute and networking mmodules on terraform cloud to AWS
 
 resource "github_repository" "mtc_repo" {
     name = "mtc-dev-repo"
@@ -45,17 +45,17 @@ resource "github_repository" "mtc_repo" {
     # I will make mine public.
 }
 
-# Next set a default branch
+#Next set a default branch
 resource "github_branch_default" "default" {
     repository = github_repository.mtc_repo.name
     # this will reference the repo above.
     branch = "main"
 }
 
-# Next add the configuration designer main.tf file that was created in terraform cloud. This is in 
-# the mtc-control/deployments/mtc-dev/main.tf
+#Next add the configuration designer main.tf file that was created in terraform cloud. This is in 
+#the mtc-control/deployments/mtc-dev/main.tf
 resource "github_repository_file" "main_terraform_deployment_file" {
-# note cannot use "main.tf" as the name. But that is what this github repo is for, to put main.tf onto it....
+#note cannot use "main.tf" as the name. But that is what this github repo is for, to put main.tf onto it....
     repository = github_repository.mtc_repo.name
     branch = "main"
     file = "main.tf"
@@ -73,11 +73,11 @@ resource "github_repository_file" "main_terraform_deployment_file" {
 
 
 resource "tfe_oauth_client" "mtc_oauth" {
-# this oAuth will permit terrafrom cloud to authenticate with github. This is what we did when addubg a VC provider at the org level in 
-# terrafrom cloud. We essaentially added authentication between github as the VC provider and terraform cloud
-# Here we are doing this strictly through terraform tf file.  This is what permits our deployment workspace on terraform cloud (see next resource below)
-# to communicate with github, specifically the deployment github repo that has the composer main.tf which will deploy the compute and networking
-# modules that are accessible in the terraform cloud org.
+#this oAuth will permit terrafrom cloud to authenticate with github. This is what we did when addubg a VC provider at the org level in 
+#terrafrom cloud. We essaentially added authentication between github as the VC provider and terraform cloud
+#Here we are doing this strictly through terraform tf file.  This is what permits our deployment workspace on terraform cloud (see next resource below)
+#to communicate with github, specifically the deployment github repo that has the composer main.tf which will deploy the compute and networking
+#modules that are accessible in the terraform cloud org.
     organization = local.organization
     # this is defined in the locals block at the start of this main.tf file. See above
     api_url = "https://api.github.com"
@@ -86,8 +86,8 @@ resource "tfe_oauth_client" "mtc_oauth" {
     service_provider = "github"
 }
 
-# Next need to attach the github as a client to the terraform cloud workspace (a deployment workspace that will host the main.tf file in 
-# mtc-control/deployments/mtc-dev/main.tf)
+#Next need to attach the github as a client to the terraform cloud workspace (a deployment workspace that will host the main.tf file in 
+#mtc-control/deployments/mtc-dev/main.tf)
 resource "tfe_workspace" "mtc_workspace" {
     name = github_repository.mtc_repo.name
     # the name create a dependency so that we do not get the terraform cloud workspace being creatd prior to the github repo
@@ -102,7 +102,7 @@ resource "tfe_workspace" "mtc_workspace" {
     }
 }
 
-# Need env vars so that the terraform cloud runners can authenticate with AWS
+#Need env vars so that the terraform cloud runners can authenticate with AWS
 resource "tfe_variable" "aws_creds" {
     for_each = local.aws_creds
     # see locals block above
@@ -123,14 +123,14 @@ The controller main.tf file above has established an oAuth between this github r
 
 # This is  mtc-control/deployments/mtc-dev/main.tf
 
-# The configuration below was created (generated) from the terraform cloud configuration designer as a component of the 
-# registry and the compute and networking modules.  This file was auto-created by the configuration designer after adding 
-# the compute module and networking module and then supplying the
-# required variables.  This file is being added as main.tf in mtc-control/deployments/mtc-dev/ as part of the terraform CI/CD project
-# workspace on Cloud9 IDE
-# Note the source below: this file will actually be executed on terraform cloud (it will be pushed from Cloud9 IDE to a git deployment repo
-# which will have an oAuth link to terraform cloud.). It will be pushed to a deployment workspace on terraform cloud. This deployment workspace
-# will execute the networking and compute modules in the terraform cloud (already there) per the terraform code below...
+#The configuration below was created (generated) from the terraform cloud configuration designer as a component of the 
+#registry and the compute and networking modules.  This file was auto-created by the configuration designer after adding 
+#the compute module and networking module and then supplying the
+#required variables.  This file is being added as main.tf in mtc-control/deployments/mtc-dev/ as part of the terraform CI/CD project
+#workspace on Cloud9 IDE
+#Note the source below: this file will actually be executed on terraform cloud (it will be pushed from Cloud9 IDE to a git deployment repo
+#which will have an oAuth link to terraform cloud.). It will be pushed to a deployment workspace on terraform cloud. This deployment workspace
+#will execute the networking and compute modules in the terraform cloud (already there) per the terraform code below...
 
 
 //--------------------------------------------------------------------
@@ -142,20 +142,20 @@ The controller main.tf file above has established an oAuth between this github r
 // Modules
 module "compute" {
   source  = "app.terraform.io/course7_terraform_adv_AWS_org/compute/aws"
-  # the module is in terraform cloud in registry modules for the org above
+  #the module is in terraform cloud in registry modules for the org above
   version = "1.0.0"
 
   aws_region = "us-east-1"
   public_key_material = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCMYp+cg+iK2bkYPDSau7F5lCjMwuWNk4VVAtEw2qJGAUC0a9hErMG/dOt1Ct/S+G1jninr9iVfy12vEo8pi3wiusw/+4lVIV5KMrI3psMjRnpQRRB4TxFlzTKQ7bYtftt6f78UyQ9CyvmFnxBFeKTDOcT9mxK0IlvmzOdtEVbDqmm5/DYx6TXT3Il+c+3zMZhZruU6C1b/3/mjKkSbYu4cCflsV07q7v0fz9EmDIi0RtUSPDv32Am8sL0OHfTPzqnWuPgNs4Q/go/tq4Fvq73ijO0Vqu5mF0Z8JYIy3PooyBmlrj9XBDUF+BgJsV3TThD7YRJNqTgfYjKw0ofjJZh3aZSKIW8sPcZFky+dr+3eOQqLLk5Eo292J4Ti5MkRhaFHB+5kiy9gnNILRaOn8kj0R7q1U/OPNpoa6wBbSIx6DLvTWcH3WXcNy5DCEPWK8FGQBTLug31b7ICu7jBiuOVdqckqro4Z2WATad6UuST5THBwwDV542t8N27U0htSuMs= ubuntu@ip-172-31-11-176"
   public_sg = "${module.networking.public_sg}"
-  # NOTE: when adding these variables in configuration designer in terraform cloud, this is why we used interoplation syntax with ${} 
-  # Otherwise the above would have been put directly in quotes.
+  #NOTE: when adding these variables in configuration designer in terraform cloud, this is why we used interoplation syntax with ${} 
+  #Otherwise the above would have been put directly in quotes.
   public_subnets = "${module.networking.public_subnets}"
 }
 
 module "networking" {
   source  = "app.terraform.io/course7_terraform_adv_AWS_org/networking/aws"
-  # the module is in terraform cloud in registry modules for the org above
+  #the module is in terraform cloud in registry modules for the org above
   version = "1.0.0"
 
   access_ip = "0.0.0.0/0"
