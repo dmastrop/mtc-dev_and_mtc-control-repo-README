@@ -8,7 +8,12 @@ terraform project workspace on Cloud9 IDE as part of this development project.  
 
 Note that a terraorm destroy on the Cloud9 IDE will remove the mtc-dev-repo deployment repo on github as well as tear down the deployment on AWS
 
-# This is mtc-control/main.tf.  Terraform has been intialized in this directory and can be run locally in Cloud9 IDE
+
+
+
+# This is mtc-control/main.tf.  
+
+#Terraform has been intialized in this directory and can be run locally in Cloud9 IDE
 
 
 # add a locals block
